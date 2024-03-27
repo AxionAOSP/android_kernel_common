@@ -915,6 +915,10 @@ void __noreturn do_exit(long code)
 	if (tsk->task_frag.page)
 		put_page(tsk->task_frag.page);
 
+#ifdef CONFIG_SCHED_BORE
+	free_entity_bore(&current->se);
+#endif
+
 	validate_creds_for_do_exit(tsk);
 	exit_task_stack_account(tsk);
 
