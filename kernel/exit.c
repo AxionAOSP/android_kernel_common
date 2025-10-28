@@ -810,6 +810,7 @@ static void synchronize_group_exit(struct task_struct *tsk, long code)
 void __noreturn do_exit(long code)
 {
 	struct task_struct *tsk = current;
+	struct sched_entity *se = &tsk->se;
 	int group_dead;
 
 	WARN_ON(irqs_disabled());
@@ -917,8 +918,13 @@ void __noreturn do_exit(long code)
 		put_page(tsk->task_frag.page);
 
 #ifdef CONFIG_SCHED_BORE
-	free_entity_bore(&current->se);
+	free_entity_bore(se);
 #endif
+
+    if (se->latency_node) {
+        kfree(se->latency_node);
+        se->latency_node = NULL;
+    }
 
 	validate_creds_for_do_exit(tsk);
 	exit_task_stack_account(tsk);
