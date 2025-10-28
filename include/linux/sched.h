@@ -601,8 +601,8 @@ struct sched_entity {
 #else
 	ANDROID_KABI_RESERVE(1);
 #endif
-	ANDROID_KABI_RESERVE(2);
-	ANDROID_KABI_RESERVE(3);
+    ANDROID_KABI_USE(2, struct rb_node *latency_node);
+	ANDROID_KABI_USE(3, long latency_offset);
 	ANDROID_KABI_RESERVE(4);
 };
 
@@ -1564,7 +1564,7 @@ struct task_struct {
 	union rv_task_monitor		rv[RV_PER_TASK_MONITORS];
 #endif
 	ANDROID_KABI_USE(1, unsigned int saved_state);
-	ANDROID_KABI_RESERVE(2);
+	ANDROID_KABI_USE(2, int latency_prio);
 	ANDROID_KABI_RESERVE(3);
 	ANDROID_KABI_RESERVE(4);
 	ANDROID_KABI_RESERVE(5);
